@@ -1,0 +1,9 @@
+=======================================
+          ${spring.application.name}
+=======================================
+Application: ${spring.application.name}
+Profile: ${spring.profiles.active}
+Port: ${server.port}
+Java: ${java.version}
+Spring Boot: ${spring-boot.version}
+=======================================
