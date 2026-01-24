@@ -1,0 +1,44 @@
+services:
+  # MySQL instance for clinica application
+  clinica-db:
+    container_name: clinica-db
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: clinica_v1
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - clinica-network
+
+  # clinica-db application
+  clinica-service:
+    container_name: clinica-service
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://clinica-db:3306/clinica_v1?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootpassword
+      SPRING_PROFILES_ACTIVE: mysql
+    depends_on:
+      clinica-db:
+        condition: service_healthy
+    networks:
+      - clinica-network
+
+networks:
+  clinica-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
