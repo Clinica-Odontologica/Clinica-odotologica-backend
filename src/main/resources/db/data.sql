@@ -18,10 +18,10 @@ INSERT INTO services (id, name, base_price) VALUES (4, 'Blanqueamiento', 300.00)
 INSERT INTO services (id, name, base_price) VALUES (5, 'Ortodoncia (Mensual)', 250.00);
 
 -- 4. USUARIOS (Pass: 123456)
-INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (1, 'admin', '$2a$10$R/h3.e..p/.W.i/z.k/.u.x/y.z.1.2.3.4.5', 'Administrador General', 'admin@clinica.com', 1);
-INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (2, 'recepcion', '$2a$10$R/h3.e..p/.W.i/z.k/.u.x/y.z.1.2.3.4.5', 'Laura Recepcionista', 'recepcion@clinica.com', 2);
-INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (3, 'dr_house', '$2a$10$R/h3.e..p/.W.i/z.k/.u.x/y.z.1.2.3.4.5', 'Gregory House', 'house@clinica.com', 3);
-INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (4, 'dra_grey', '$2a$10$R/h3.e..p/.W.i/z.k/.u.x/y.z.1.2.3.4.5', 'Meredith Grey', 'grey@clinica.com', 3);
+INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (1, 'admin', 'admin123', 'Administrador General', 'admin@clinica.com', 1);
+INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (2, 'recepcion', 'recepcion123', 'Laura Recepcionista', 'recepcion@clinica.com', 2);
+INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (3, 'dr_house', 'dr_house123', 'Gregory House', 'house@clinica.com', 3);
+INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (4, 'dra_grey', 'dra_grey123', 'Meredith Grey', 'grey@clinica.com', 3);
 
 -- 5. DOCTORES
 INSERT INTO doctors (id, name, last_name, specialty, user_id) VALUES (1, 'Gregory', 'House', 'Diagnóstico Clínico', 3);
