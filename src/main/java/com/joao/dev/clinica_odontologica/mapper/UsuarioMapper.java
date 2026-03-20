@@ -15,7 +15,6 @@ public class UsuarioMapper {
         UserResponseDTO dto = new UserResponseDTO();
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
-        dto.setPassword(user.getPassword());
         dto.setFullname(user.getFullName());
         dto.setEmail(user.getEmail());
         dto.setRol(user.getRole());
