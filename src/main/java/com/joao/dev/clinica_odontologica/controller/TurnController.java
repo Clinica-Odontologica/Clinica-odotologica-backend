@@ -20,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping(Constant.API_VERSION + "/" + Constant.TABLE_TURN)
@@ -29,9 +31,20 @@ public class TurnController {
 
     private final TurnService turnService;
 
+    @GetMapping("/doctor/{doctorId}")
+    @Operation(summary = "Ver agenda de un doctor por fecha")
+    public ResponseEntity<GlobalResponse<List<TurnResponseDTO>>> getByDoctorAndDate(
+            @PathVariable Long doctorId,
+            @RequestParam(required = false) String date
+    ) {
+        LocalDate localDate = (date != null) ? LocalDate.parse(date) : LocalDate.now();
+        List<TurnResponseDTO> data = turnService.findByDoctorIdAndDate(doctorId, localDate);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(GlobalResponse.success(data, "Agenda del doctor recuperada"));
+    }
+
     @PostMapping("/save")
-    @Operation(
-            summary = "Reservar un nuevo turno",
+    @Operation(summary = "Reservar un nuevo turno",
             description = "Registra una cita vinculando Paciente + Doctor + Servicios. " +
                     "**Calcula automáticamente el costo total** basándose en los precios actuales de los servicios seleccionados y establece el estado inicial como 'PENDIENTE'."
     )
