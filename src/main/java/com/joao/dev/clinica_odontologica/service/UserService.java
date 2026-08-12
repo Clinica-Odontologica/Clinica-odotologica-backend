@@ -58,6 +58,7 @@ public class UserService {
         existingUser.setFullName(userUpdateRequestDTO.getFullname());
         existingUser.setEmail(userUpdateRequestDTO.getEmail());
         existingUser.setRole(userUpdateRequestDTO.getRol());
+        existingUser.setIsActive(userUpdateRequestDTO.getIsActive());
 
         User updatedUser = userRepository.save(existingUser);
         return UsuarioMapper.toDTO(updatedUser);

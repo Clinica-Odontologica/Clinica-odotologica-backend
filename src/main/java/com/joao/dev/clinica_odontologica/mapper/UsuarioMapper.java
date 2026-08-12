@@ -16,6 +16,7 @@ public class UsuarioMapper {
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
         dto.setFullname(user.getFullName());
+        dto.setPassword(user.getPassword());
         dto.setEmail(user.getEmail());
         dto.setRol(user.getRole());
         dto.setActive(user.getIsActive());

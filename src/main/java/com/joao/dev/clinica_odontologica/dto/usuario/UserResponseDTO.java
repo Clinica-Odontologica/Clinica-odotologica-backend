@@ -17,6 +17,7 @@ public class UserResponseDTO {
     private Long id;
     private String username;
     private String fullname;
+    private String password;
     private String email;
     private Role rol;
     private boolean isActive;
