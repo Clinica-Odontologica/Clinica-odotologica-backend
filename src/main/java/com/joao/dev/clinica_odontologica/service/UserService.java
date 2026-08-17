@@ -3,7 +3,6 @@ package com.joao.dev.clinica_odontologica.service;
 import com.joao.dev.clinica_odontologica.dto.usuario.UserRequestDTO;
 import com.joao.dev.clinica_odontologica.dto.usuario.UserResponseDTO;
 import com.joao.dev.clinica_odontologica.dto.usuario.UserUpdateRequestDTO;
-import com.joao.dev.clinica_odontologica.entity.Doctor;
 import com.joao.dev.clinica_odontologica.entity.User;
 import com.joao.dev.clinica_odontologica.exceptions.EntityAlreadyExistsException;
 import com.joao.dev.clinica_odontologica.mapper.UsuarioMapper;

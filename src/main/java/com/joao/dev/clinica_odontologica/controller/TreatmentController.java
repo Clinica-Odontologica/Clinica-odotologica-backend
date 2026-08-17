@@ -3,6 +3,8 @@ package com.joao.dev.clinica_odontologica.controller;
 import com.joao.dev.clinica_odontologica.config.Constant;
 import com.joao.dev.clinica_odontologica.dto.GlobalResponse;
 import com.joao.dev.clinica_odontologica.dto.service.ServiceDTO;
+import com.joao.dev.clinica_odontologica.dto.usuario.UserUpdateRequestDTO;
+import com.joao.dev.clinica_odontologica.repository.ServiceRepository;
 import com.joao.dev.clinica_odontologica.service.TreatmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -57,6 +59,17 @@ public class TreatmentController {
                 .body(GlobalResponse.success(data, "Servicio creado correctamente"));
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<GlobalResponse<ServiceDTO>> updateService(
+            @PathVariable Long id,
+            @Valid @RequestBody ServiceDTO serviceDTO
+    ) {
+        ServiceDTO data = treatmentService.updateService(id, serviceDTO);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(GlobalResponse.success(data, "Servicio actualizado correctamente :D"));
+    }
+
     @GetMapping("/dashboard-paginated")
     @Operation(summary = "Catálogo completo paginado (Admin)")
     public ResponseEntity<GlobalResponse<Page<ServiceDTO>>> getAllServices(
@@ -64,7 +77,7 @@ public class TreatmentController {
             @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ServiceDTO> data = treatmentService.findAllPaginated(pageable);
+        Page<ServiceDTO> data = treatmentService.getAllService(pageable);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GlobalResponse.success(data, "Lista de servicios paginada"));
     }

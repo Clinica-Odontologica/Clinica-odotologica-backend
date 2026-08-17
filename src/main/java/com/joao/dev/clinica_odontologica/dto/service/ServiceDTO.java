@@ -15,4 +15,5 @@ public class ServiceDTO {
     private Long id;
     private String name;
     private BigDecimal basePrice;
+    private Boolean isActive;
 }

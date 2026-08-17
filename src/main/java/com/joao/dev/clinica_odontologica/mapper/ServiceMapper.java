@@ -14,6 +14,7 @@ public class ServiceMapper {
         dto.setId(service.getId());
         dto.setName(service.getName());
         dto.setBasePrice(service.getBasePrice());
+        dto.setIsActive(service.getIsActive());
         return dto;
     }
 
@@ -23,6 +24,7 @@ public class ServiceMapper {
         Service service = new Service();
         service.setName(dto.getName());
         service.setBasePrice(dto.getBasePrice());
+        service.setIsActive(dto.getIsActive());
         return service;
     }
 }

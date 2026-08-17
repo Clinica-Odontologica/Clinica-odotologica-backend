@@ -1,8 +1,9 @@
 package com.joao.dev.clinica_odontologica.service;
 
 import com.joao.dev.clinica_odontologica.dto.service.ServiceDTO;
-import com.joao.dev.clinica_odontologica.entity.User;
+import com.joao.dev.clinica_odontologica.dto.usuario.UserResponseDTO;
 import com.joao.dev.clinica_odontologica.mapper.ServiceMapper;
+import com.joao.dev.clinica_odontologica.mapper.UsuarioMapper;
 import com.joao.dev.clinica_odontologica.repository.ServiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.joao.dev.clinica_odontologica.mapper.ServiceMapper.toDTO;
 
 @Service
 @RequiredArgsConstructor
@@ -26,24 +29,36 @@ public class TreatmentService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public Page<ServiceDTO> getAllService(Pageable pageable) {
+        return serviceRepository.findAll(pageable)
+                .map(ServiceMapper::toDTO);
+    }
+
     @Transactional
     public ServiceDTO createService(ServiceDTO dto) {
         com.joao.dev.clinica_odontologica.entity.Service entity = ServiceMapper.toEntity(dto);
         entity.setIsActive(true);
-        return ServiceMapper.toDTO(serviceRepository.save(entity));
-    }
-
-    @Transactional
-    public Page<ServiceDTO> findAllPaginated(Pageable pageable) {
-        return serviceRepository.findAll(pageable)
-                .map(ServiceMapper::toDTO);
+        return toDTO(serviceRepository.save(entity));
     }
 
     @Transactional
     public ServiceDTO findById(Long id) {
         com.joao.dev.clinica_odontologica.entity.Service service = serviceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Service not found with id: " + id));
-        return ServiceMapper.toDTO(service);
+        return toDTO(service);
+    }
+
+    @Transactional
+    public ServiceDTO updateService(Long id, ServiceDTO dto) {
+       com.joao.dev.clinica_odontologica.entity.Service existingService = serviceRepository.findById(id)
+               .orElseThrow(() -> new RuntimeException("Service not found with id: " + id));
+
+        existingService.setName(dto.getName());
+        existingService.setBasePrice(dto.getBasePrice());
+
+        com.joao.dev.clinica_odontologica.entity.Service updateService = serviceRepository.save(existingService);
+        return ServiceMapper.toDTO(updateService);
     }
 
     @Transactional
