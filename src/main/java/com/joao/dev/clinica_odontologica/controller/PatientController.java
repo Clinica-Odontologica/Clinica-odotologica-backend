@@ -54,6 +54,7 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GlobalResponse.success(data, "Patient found by DNI: " + dni));
     }
+
     @Operation(
             summary = "Registrar o Actualizar Paciente",
             description = "Crea un nuevo expediente de paciente. Si el paciente ya existe (DNI duplicado), devolverá error."
@@ -62,6 +63,14 @@ public class PatientController {
             @ApiResponse(responseCode = "201", description = "Paciente registrado correctamente"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos o DNI ya registrado", content = @Content)
     })
+
+    @PutMapping("/{id}")
+    public ResponseEntity<GlobalResponse<PatientDTO>> updatePatient(@PathVariable Long id, @Valid @RequestBody PatientDTO patientDTO) {
+        PatientDTO data = patientService.update(id, patientDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(GlobalResponse.success(data, "Patient edited successfully"));
+    }
+
     @PostMapping("/save")
     public ResponseEntity<GlobalResponse<PatientDTO>> savePatient(@Valid @RequestBody PatientDTO patientDTO) {
         PatientDTO data = patientService.save(patientDTO);
@@ -81,6 +90,7 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GlobalResponse.success(data, "Patients retrieved successfully"));
     }
+
     @DeleteMapping("/{id}")
     @Operation(
             summary = "Eliminar Paciente (Borrado Lógico)",

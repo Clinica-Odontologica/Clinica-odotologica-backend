@@ -51,11 +51,12 @@ public class TreatmentService {
 
     @Transactional
     public ServiceDTO updateService(Long id, ServiceDTO dto) {
-       com.joao.dev.clinica_odontologica.entity.Service existingService = serviceRepository.findById(id)
-               .orElseThrow(() -> new RuntimeException("Service not found with id: " + id));
+        com.joao.dev.clinica_odontologica.entity.Service existingService = serviceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Service not found with id: " + id));
 
         existingService.setName(dto.getName());
         existingService.setBasePrice(dto.getBasePrice());
+        existingService.setIsActive(dto.getIsActive());
 
         com.joao.dev.clinica_odontologica.entity.Service updateService = serviceRepository.save(existingService);
         return ServiceMapper.toDTO(updateService);
@@ -63,7 +64,7 @@ public class TreatmentService {
 
     @Transactional
     public void delete(Long id) {
-        com.joao.dev.clinica_odontologica.entity.Service service  = serviceRepository.findById(id)
+        com.joao.dev.clinica_odontologica.entity.Service service = serviceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         service.setIsActive(false);

@@ -50,6 +50,21 @@ public class PatientService {
     }
 
     @Transactional
+    public PatientDTO update(Long id, PatientDTO dto) {
+        Patient existingPatient = patientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Service not found with id: " + id));
+
+        existingPatient.setName(dto.getName());
+        existingPatient.setLast_name(dto.getLast_name());
+        existingPatient.setEmail(dto.getEmail());
+        existingPatient.setPhone(dto.getPhone());
+
+        Patient updatePatient = patientRepository.save(existingPatient);
+
+        return PatientMapper.toDTO(updatePatient);
+    }
+
+    @Transactional
     public void delete(Long id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
