@@ -58,6 +58,7 @@ public class PatientService {
         existingPatient.setLast_name(dto.getLast_name());
         existingPatient.setEmail(dto.getEmail());
         existingPatient.setPhone(dto.getPhone());
+        existingPatient.setIsActive(dto.getIsActive());
 
         Patient updatePatient = patientRepository.save(existingPatient);
 

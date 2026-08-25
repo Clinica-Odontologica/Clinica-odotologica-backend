@@ -2,6 +2,7 @@ package com.joao.dev.clinica_odontologica.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,7 +26,7 @@ public class Patient {
     private String email;
 
     @Column(name = "is_active")
-    private Boolean isActive = true;
+    private Boolean isActive;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -34,7 +35,13 @@ public class Patient {
     private LocalDateTime updatedAt;
 
     @PrePersist
-    protected void onCreate() { createdAt = LocalDateTime.now(); updatedAt = LocalDateTime.now(); }
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
     @PreUpdate
-    protected void onUpdate() { updatedAt = LocalDateTime.now(); }
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

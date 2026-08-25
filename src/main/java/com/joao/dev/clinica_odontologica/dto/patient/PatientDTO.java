@@ -27,4 +27,6 @@ public class PatientDTO {
 
     @Email(message = "Formato de email inválido")
     private String email;
+
+    private Boolean isActive;
 }

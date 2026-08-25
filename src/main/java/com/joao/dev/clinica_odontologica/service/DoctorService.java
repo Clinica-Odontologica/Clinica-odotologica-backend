@@ -2,6 +2,7 @@ package com.joao.dev.clinica_odontologica.service;
 
 import com.joao.dev.clinica_odontologica.dto.doctor.DoctorDTO;
 import com.joao.dev.clinica_odontologica.dto.doctor.DoctorRequestDTO;
+import com.joao.dev.clinica_odontologica.dto.doctor.DoctorUpdateDTO;
 import com.joao.dev.clinica_odontologica.entity.Doctor;
 import com.joao.dev.clinica_odontologica.entity.Role;
 import com.joao.dev.clinica_odontologica.entity.User;
@@ -71,13 +72,14 @@ public class DoctorService {
     }
 
     @Transactional
-    public DoctorDTO update(Long id, DoctorRequestDTO req) {
+    public DoctorDTO update(Long id, DoctorUpdateDTO req) {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Doctor no encontrado"));
 
         doctor.setName(req.getName());
         doctor.setLastName(req.getLastName());
         doctor.setSpecialty(req.getSpecialty());
+        doctor.setIsActive(req.getIsActive());
 
         return DoctorMapper.toDTO(doctorRepository.save(doctor));
     }
@@ -90,7 +92,7 @@ public class DoctorService {
         doctor.setIsActive(false);
         doctorRepository.save(doctor);
 
-        if(doctor.getUser() != null) {
+        if (doctor.getUser() != null) {
             doctor.getUser().setIsActive(false);
             userRepository.save(doctor.getUser());
         }

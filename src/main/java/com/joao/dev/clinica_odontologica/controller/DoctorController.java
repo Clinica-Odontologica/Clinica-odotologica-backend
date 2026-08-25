@@ -4,6 +4,7 @@ import com.joao.dev.clinica_odontologica.config.Constant;
 import com.joao.dev.clinica_odontologica.dto.GlobalResponse;
 import com.joao.dev.clinica_odontologica.dto.doctor.DoctorDTO;
 import com.joao.dev.clinica_odontologica.dto.doctor.DoctorRequestDTO;
+import com.joao.dev.clinica_odontologica.dto.doctor.DoctorUpdateDTO;
 import com.joao.dev.clinica_odontologica.service.DoctorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -94,7 +95,7 @@ public class DoctorController {
     })
     public ResponseEntity<GlobalResponse<DoctorDTO>> updateDoctor(
             @PathVariable Long id,
-            @Valid @RequestBody DoctorRequestDTO req) {
+            @Valid @RequestBody DoctorUpdateDTO req) {
         DoctorDTO data = doctorService.update(id, req);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GlobalResponse.success(data, "Doctor actualizado"));

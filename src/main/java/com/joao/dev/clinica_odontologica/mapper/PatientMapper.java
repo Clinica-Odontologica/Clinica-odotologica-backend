@@ -17,6 +17,7 @@ public class PatientMapper {
         dto.setLast_name((patient.getLast_name()));
         dto.setPhone(patient.getPhone());
         dto.setEmail(patient.getEmail());
+        dto.setIsActive(patient.getIsActive());
         return dto;
     }
 
@@ -32,6 +33,7 @@ public class PatientMapper {
         patient.setLast_name(dto.getLast_name());
         patient.setPhone(dto.getPhone());
         patient.setEmail(dto.getEmail());
+        patient.setIsActive(dto.getIsActive());
         return patient;
     }
 }
