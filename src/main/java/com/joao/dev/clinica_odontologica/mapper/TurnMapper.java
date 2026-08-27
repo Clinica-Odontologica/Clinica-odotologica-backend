@@ -44,14 +44,14 @@ public class TurnMapper {
             serviceDTOS = turn.getServices().stream()
                     .map(ts -> {
                         ServiceDTO sDto = new ServiceDTO();
-                        sDto.setId(ts.getService().getId()); // ID del servicio original
+                        sDto.setId(ts.getService().getId());
                         sDto.setName(ts.getService().getName());
-                        sDto.setBasePrice(ts.getPriceAtTime()); // Usamos el precio histórico guardado
+                        sDto.setBasePrice(ts.getPriceAtTime());
+                        sDto.setIsActive(ts.getService().getIsActive());
                         return sDto;
                     })
                     .collect(Collectors.toList());
 
-            // 2. Sumar el total
             totalCost = turn.getServices().stream()
                     .map(TurnService::getPriceAtTime)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);

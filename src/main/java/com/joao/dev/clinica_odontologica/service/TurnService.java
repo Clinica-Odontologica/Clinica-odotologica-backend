@@ -44,6 +44,7 @@ public class TurnService {
         return turnRepository.findAll(pageable)
                 .map(TurnMapper::toDTO);
     }
+
     @Transactional(readOnly = true)
     public TurnResponseDTO findById(Long id) {
         Turn turn = turnRepository.findById(id)
@@ -96,13 +97,18 @@ public class TurnService {
 
         return TurnMapper.toDTO(savedTurn);
     }
+
     @Transactional
     public void delete(Long id) {
         Turn turn = turnRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
+
+        TurnStatus statusCancelado = turnStatusRepository.findByName("CANCELADO")
+                .orElseThrow(() -> new RuntimeException("Estado CANCELADO no configurado en BD"));
+
+        turn.setStatus(statusCancelado);
 
         turn.setIsActive(false);
         turnRepository.save(turn);
-
     }
 }
