@@ -20,7 +20,7 @@ INSERT INTO services (id, name, base_price) VALUES (5, 'Ortodoncia (Mensual)', 2
 -- 4. USUARIOS (Pass: 123456)
 INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (1, 'admin', 'admin123', 'Administrador General', 'admin@clinica.com', 1);
 INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (2, 'recepcion', 'recepcion123', 'Laura Recepcionista', 'recepcion@clinica.com', 2);
-INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (3, 'dr_house', 'dr_house123', 'Gregory House', 'house@clinica.com', 3);
+    INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (3, 'dr_house', 'dr_house123', 'Gregory House', 'house@clinica.com', 3);
 INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (4, 'dra_grey', 'dra_grey123', 'Meredith Grey', 'grey@clinica.com', 3);
 
 -- 5. DOCTORES

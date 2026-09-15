@@ -46,6 +46,13 @@ public class DoctorService {
                 .orElseThrow(() -> new RuntimeException("Doctor no encontrado"));
     }
 
+    @Transactional(readOnly = true)
+    public DoctorDTO findByUserId(Long userId) {
+        return doctorRepository.findByUserId(userId)
+                .map(DoctorMapper::toDTO)
+                .orElseThrow(() -> new RuntimeException("No se encontró un perfil de doctor para el usuario: " + userId));
+    }
+
     @Transactional
     public DoctorDTO save(DoctorRequestDTO req) {
         Role roleDoctor = roleRepository.findByName("ROLE_DOCTOR")

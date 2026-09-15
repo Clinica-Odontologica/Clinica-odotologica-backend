@@ -28,7 +28,7 @@ public class ClinicalEntryService {
         Turn turn = turnRepository.findById(request.getTurnId())
                 .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
 
-        if ("DONE".equals(turn.getStatus().getName())) {
+        if ("COMPLETADO".equals(turn.getStatus().getName()) || "DONE".equals(turn.getStatus().getName())) {
             throw new RuntimeException("Este turno ya fue finalizado anteriormente");
         }
 
@@ -36,9 +36,8 @@ public class ClinicalEntryService {
         entry.setTurn(turn);
         clinicalEntryRepository.save(entry);
 
-        TurnStatus statusDone = turnStatusRepository.findByName("PENDIENTE")
-                .orElseThrow(() -> new RuntimeException("Estado PENDIENTE no existe en BD"));
-
+        TurnStatus statusDone = turnStatusRepository.findByName("COMPLETADO")
+                .orElseThrow(() -> new RuntimeException("Estado COMPLETADO no existe en BD"));
         turn.setStatus(statusDone);
         turnRepository.save(turn);
     }
@@ -49,7 +48,7 @@ public class ClinicalEntryService {
         return ClinicalEntryMapper.toDTO(entry);
     }
 
-    public Page<ClinicalEntryResponseDTO> findAll(Pageable pageable){
+    public Page<ClinicalEntryResponseDTO> findAll(Pageable pageable) {
         return clinicalEntryRepository.findAll(pageable).map(ClinicalEntryMapper::toDTO);
     }
 }

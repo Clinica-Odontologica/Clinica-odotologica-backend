@@ -72,6 +72,18 @@ public class DoctorController {
                 .body(GlobalResponse.success(data, "Doctor encontrado"));
     }
 
+    @GetMapping("/user/{userId}")
+    @Operation(summary = "Obtener detalle de un doctor")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Doctor encontrado"),
+            @ApiResponse(responseCode = "404", description = "Doctor no encontrado", content = @Content)
+    })
+    public ResponseEntity<GlobalResponse<DoctorDTO>> getByUserId(@PathVariable Long userId) {
+        DoctorDTO data = doctorService.findByUserId(userId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(GlobalResponse.success(data, "Doctor encontrado"));
+    }
+
     @PostMapping("/save")
     @Operation(
             summary = "Registrar nuevo doctor",

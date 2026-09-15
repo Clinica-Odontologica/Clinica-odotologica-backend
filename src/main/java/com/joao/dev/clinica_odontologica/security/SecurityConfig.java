@@ -50,30 +50,40 @@ public class SecurityConfig {
                         // 1. ENDPOINTS PÚBLICOS (Sin Token)
                         // ====================================================
                         .requestMatchers("/api/v1/auth/**")
-                        .permitAll() // Login y Register
+                        .permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                         .permitAll()
 
                         // ====================================================
                         // 2. GESTIÓN DE USUARIOS (Solo Admin)
                         // ====================================================
-                        .requestMatchers("/api/v1/usuarios/**")
-                        .hasAuthority("ROLE_ADMIN")
+                        // Permitimos que CUALQUIER usuario logueado pueda ver y actualizar su propio perfil
+                        .requestMatchers(HttpMethod.GET, "/api/v1/usuarios/{id}").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/usuarios/update/{id}").authenticated()
+                        // Pero solo el ADMIN puede crear, listar todos, o borrar usuarios
+                        .requestMatchers("/api/v1/usuarios/**").hasAuthority("ROLE_ADMIN")
+
 
                         // ====================================================
                         // 3. GESTIÓN DE DOCTORES
                         // ====================================================
-                        // Primero las rutas específicas o de lectura para varios roles:
-                        .requestMatchers(HttpMethod.GET, "/api/v1/doctores/active-list", "/api/v1/doctores/{id}", "/api/v1/doctores/dashboard-paginated/**")
+                        // Permitimos que el DOCTOR consulte su propio perfil
+                        .requestMatchers(HttpMethod.GET, "/api/v1/doctores/user/**")
+                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_DOCTOR")
+
+                        .requestMatchers(HttpMethod.GET, "/api/v1/doctores/active-list")
+                        .hasAnyAuthority("ROLE_ADMIN", "ROLE_RECEPTIONIST")
+
+                        // El resto de la paginación y buscar por ID sigue siendo solo para Admin
+                        .requestMatchers(HttpMethod.GET, "/api/v1/doctores/{id}", "/api/v1/doctores/dashboard-paginated/**")
                         .hasAuthority("ROLE_ADMIN")
-                        // Luego las reglas generales de modificación (Solo Admin):
+
                         .requestMatchers("/api/v1/doctores/**")
                         .hasAuthority("ROLE_ADMIN")
 
                         // ====================================================
-                        // 4. GESTIÓN DE PACIENTES (Recepción, Admin y Doctores)
+                        // 4. GESTIÓN DE PACIENTES
                         // ====================================================
-                        // Nota: Cambiado a /pacientes/ para coincidir con tu frontend
                         .requestMatchers(HttpMethod.GET, "/api/v1/pacientes/**")
                         .hasAnyAuthority("ROLE_RECEPTIONIST", "ROLE_ADMIN", "ROLE_DOCTOR")
                         .requestMatchers(HttpMethod.POST, "/api/v1/pacientes/**")
@@ -86,7 +96,6 @@ public class SecurityConfig {
                         // ====================================================
                         // 5. GESTIÓN DE SERVICIOS/TRATAMIENTOS
                         // ====================================================
-                        // Nota: Cambiado a /tratamientos/ para coincidir con tu frontend
                         .requestMatchers(HttpMethod.GET, "/api/v1/tratamientos/**")
                         .authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/tratamientos/**")
@@ -99,8 +108,9 @@ public class SecurityConfig {
                         // ====================================================
                         // 6. GESTIÓN DE TURNOS (Agenda)
                         // ====================================================
+                        // El doctor necesita ver sus turnos
                         .requestMatchers(HttpMethod.GET, "/api/v1/turns/**", "/api/v1/turnos/**")
-                        .authenticated()
+                        .hasAnyAuthority("ROLE_RECEPTIONIST", "ROLE_ADMIN", "ROLE_DOCTOR")
                         .requestMatchers(HttpMethod.POST, "/api/v1/turns/**", "/api/v1/turnos/**")
                         .hasAnyAuthority("ROLE_RECEPTIONIST", "ROLE_ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/turns/**", "/api/v1/turnos/**")
@@ -109,9 +119,10 @@ public class SecurityConfig {
                         // ====================================================
                         // 7. HISTORIA CLÍNICA (Área Médica)
                         // ====================================================
-                        .requestMatchers(HttpMethod.POST, "/api/v1/clinical-entries/**", "/api/v1/historias/**")
+                        // 🌟 CORRECCIÓN PREVENTIVA: Añadido "/api/v1/clinica/**" que es el que usa tu frontend
+                        .requestMatchers(HttpMethod.POST, "/api/v1/clinical-entries/**", "/api/v1/historias/**", "/api/v1/clinica/**")
                         .hasAuthority("ROLE_DOCTOR")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/clinical-entries/**", "/api/v1/historias/**")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/clinical-entries/**", "/api/v1/historias/**", "/api/v1/clinica/**")
                         .hasAnyAuthority("ROLE_DOCTOR", "ROLE_ADMIN")
 
                         // -------------------------------------------------
@@ -126,4 +137,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-

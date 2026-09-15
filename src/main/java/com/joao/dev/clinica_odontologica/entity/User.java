@@ -3,6 +3,7 @@ package com.joao.dev.clinica_odontologica.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,6 +28,9 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    @OneToOne(mappedBy = "user")
+    private Doctor doctor;
 
     @Column(name = "is_active")
     private Boolean isActive = true;
