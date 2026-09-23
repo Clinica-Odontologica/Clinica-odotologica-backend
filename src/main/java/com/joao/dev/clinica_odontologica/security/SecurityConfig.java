@@ -121,7 +121,7 @@ public class SecurityConfig {
                         // ====================================================
                         // 🌟 CORRECCIÓN PREVENTIVA: Añadido "/api/v1/clinica/**" que es el que usa tu frontend
                         .requestMatchers(HttpMethod.POST, "/api/v1/clinical-entries/**", "/api/v1/historias/**", "/api/v1/clinica/**")
-                        .hasAuthority("ROLE_DOCTOR")
+                        .hasAnyAuthority("ROLE_DOCTOR", "ROLE_ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/clinical-entries/**", "/api/v1/historias/**", "/api/v1/clinica/**")
                         .hasAnyAuthority("ROLE_DOCTOR", "ROLE_ADMIN")
 
