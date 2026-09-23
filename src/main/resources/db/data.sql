@@ -24,8 +24,8 @@ INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (2,
 INSERT INTO users (id, username, password, full_name, email, role_id) VALUES (4, 'dra_grey', 'dra_grey123', 'Meredith Grey', 'grey@clinica.com', 3);
 
 -- 5. DOCTORES
-INSERT INTO doctors (id, name, last_name, specialty, user_id) VALUES (1, 'Gregory', 'House', 'Diagnóstico Clínico', 3);
-INSERT INTO doctors (id, name, last_name, specialty, user_id) VALUES (2, 'Meredith', 'Grey', 'Cirugía General', 4);
+INSERT INTO doctors (id, name, last_name, specialty, user_id) VALUES (1, 'Gregory', 'House', 'Odontología General', 3);
+INSERT INTO doctors (id, name, last_name, specialty, user_id) VALUES (2, 'Meredith', 'Grey', 'Endodoncia', 4);
 
 -- 6. PACIENTES
 INSERT INTO patients (id, dni, name, last_name, phone, email) VALUES (1, '11111111', 'Carlos', 'Pérez', '555-1001', 'carlos@mail.com');
