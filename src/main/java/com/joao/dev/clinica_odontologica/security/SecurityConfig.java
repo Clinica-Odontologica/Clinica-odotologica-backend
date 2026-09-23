@@ -24,7 +24,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:5173");/*Puerto de VITE*/
-        configuration.addAllowedOrigin("http://localhost:80");/*Puerto de nginx*/
+        configuration.addAllowedOrigin("http://localhost");/*Puerto de nginx*/
         configuration.addAllowedOrigin("http://localhost:8081");/*Puerto de SWAGGER*/
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
