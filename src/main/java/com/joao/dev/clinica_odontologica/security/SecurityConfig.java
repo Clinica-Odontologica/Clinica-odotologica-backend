@@ -23,8 +23,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:5173");
-        configuration.addAllowedOrigin("http://localhost:8081");
+        configuration.addAllowedOrigin("http://localhost:5173");/*Puerto de VITE*/
+        configuration.addAllowedOrigin("http://localhost:80");/*Puerto de nginx*/
+        configuration.addAllowedOrigin("http://localhost:8081");/*Puerto de SWAGGER*/
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(false);
