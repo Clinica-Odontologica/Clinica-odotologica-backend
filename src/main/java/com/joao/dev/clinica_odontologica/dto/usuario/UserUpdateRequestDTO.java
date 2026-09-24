@@ -18,7 +18,6 @@ public class UserUpdateRequestDTO {
     @NotBlank(message = "username field cannot be null")
     private String username;
 
-    @NotBlank(message = "password field cannot be null")
     private String password;
 
     @NotBlank(message = "nombre field cannot be null")

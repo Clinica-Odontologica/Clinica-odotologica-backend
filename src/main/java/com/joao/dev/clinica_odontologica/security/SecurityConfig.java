@@ -26,6 +26,7 @@ public class SecurityConfig {
         configuration.addAllowedOrigin("http://localhost:5173");/*Puerto de VITE*/
         configuration.addAllowedOrigin("http://localhost:81");/*Puerto de nginx*/
         configuration.addAllowedOrigin("http://localhost:8081");/*Puerto de SWAGGER*/
+        configuration.addAllowedOriginPattern("https://*.trycloudflare.com");/*Puerto para tunnels de cloudflare*/
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(false);

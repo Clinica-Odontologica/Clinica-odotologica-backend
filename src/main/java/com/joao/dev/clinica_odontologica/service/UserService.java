@@ -3,13 +3,16 @@ package com.joao.dev.clinica_odontologica.service;
 import com.joao.dev.clinica_odontologica.dto.usuario.UserRequestDTO;
 import com.joao.dev.clinica_odontologica.dto.usuario.UserResponseDTO;
 import com.joao.dev.clinica_odontologica.dto.usuario.UserUpdateRequestDTO;
+import com.joao.dev.clinica_odontologica.entity.Role;
 import com.joao.dev.clinica_odontologica.entity.User;
 import com.joao.dev.clinica_odontologica.exceptions.EntityAlreadyExistsException;
 import com.joao.dev.clinica_odontologica.mapper.UsuarioMapper;
+import com.joao.dev.clinica_odontologica.repository.RoleRepository;
 import com.joao.dev.clinica_odontologica.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +21,9 @@ import static com.joao.dev.clinica_odontologica.mapper.UsuarioMapper.toEntity;
 @RequiredArgsConstructor
 @Service
 public class UserService {
-    private  final UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository; // <-- 1. Inyectar RoleRepository
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public Page<UserResponseDTO> getAllUsuarios(Pageable pageable) {
@@ -38,11 +43,13 @@ public class UserService {
         if (userRepository.existsByEmail(usuarioRequestDTO.getEmail())) {
             throw new EntityAlreadyExistsException("El email " + usuarioRequestDTO.getEmail() + " ya está en uso.");
         }
-        if (userRepository.existsByUsername(usuarioRequestDTO.getUsername())){
+        if (userRepository.existsByUsername(usuarioRequestDTO.getUsername())) {
             throw new EntityAlreadyExistsException("El username " + usuarioRequestDTO.getUsername() + " ya está en uso.");
         }
 
         User user = toEntity(usuarioRequestDTO);
+        user.setPassword(passwordEncoder.encode(usuarioRequestDTO.getPassword()));
+
         User savedUser = userRepository.save(user);
         return UsuarioMapper.toDTO(savedUser);
     }
@@ -53,10 +60,23 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Usuario not found with id: " + id));
 
         existingUser.setUsername(userUpdateRequestDTO.getUsername());
-        existingUser.setPassword(userUpdateRequestDTO.getPassword());
+
+        if (userUpdateRequestDTO.getPassword() != null && !userUpdateRequestDTO.getPassword().isBlank()) {
+            existingUser.setPassword(passwordEncoder.encode(userUpdateRequestDTO.getPassword()));
+        }
+
         existingUser.setFullName(userUpdateRequestDTO.getFullname());
         existingUser.setEmail(userUpdateRequestDTO.getEmail());
-        existingUser.setRole(userUpdateRequestDTO.getRol());
+
+        if (userUpdateRequestDTO.getRol() != null) {
+            String roleName = userUpdateRequestDTO.getRol().getName();
+
+            Role managedRole = roleRepository.findByName(roleName)
+                    .orElseThrow(() -> new RuntimeException("Rol no encontrado en la base de datos: " + roleName));
+
+            existingUser.setRole(managedRole);
+        }
+
         existingUser.setIsActive(userUpdateRequestDTO.getIsActive());
 
         User updatedUser = userRepository.save(existingUser);
@@ -70,7 +90,5 @@ public class UserService {
 
         user.setIsActive(false);
         userRepository.save(user);
-
     }
-
 }
